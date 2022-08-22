@@ -4,11 +4,13 @@
  * @Author: 王家豪
  * @Date: 2022-08-22 17:34:23
  * @LastEditors: 王家豪
- * @LastEditTime: 2022-08-22 17:37:26
+ * @LastEditTime: 2022-08-22 20:54:30
  */
 const {
   parseString
 } = require('xml2js')
+
+
 let getUserDataAsync = (req) => {
   return new Promise((resolve, reject) => {
     let xmlData = ''

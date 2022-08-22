@@ -4,7 +4,7 @@
  * @Author: 王家豪
  * @Date: 2022-08-22 09:21:23
  * @LastEditors: 王家豪
- * @LastEditTime: 2022-08-22 17:40:28
+ * @LastEditTime: 2022-08-22 22:05:18
  */
 const query = require('./db.js');
 const express = require('express')
@@ -16,6 +16,9 @@ const {
   parseXMLAsync,
   formatMessage
 } = require('../utils/getWechatData.js')
+const schedule = require('node-schedule');
+
+
 
 let config = {
   appID: "wx204b87a72dbd27d9",
@@ -24,10 +27,205 @@ let config = {
   token: "wangjiahao",
   grant_type: 'client_credential', //默认
   access_token: '',
+  openid: '',
 };
 
+class Wechat {
+  constructor() {
+    this.requestData = { //发送模板消息的数据
+      touser: 'oHQaO5xNbT7xDIaytwv-9Cd7Cv_I',
+      template_id: 'IiMnns0J6Hcz8Jjdg5qUHoFN4uf-W8loAlttgJPtWCE',
+      data: {
+        week: {
+          value: '',
+          color: '#173177'
+        },
+        date: {
+          value: '',
+          color: '#273177'
+        },
+        city: {
+          value: '',
+          color: '#373177'
+        },
+        dayweather: { //白天天气
+          value: '',
+          color: '#473177'
+        },
+        nightweather: { //晚上天气
+          value: '',
+          color: '#473177'
+        },
+        daytemp: { //今日白天温度
+          value: '',
+          color: '#573177'
+        },
+        nighttemp: { //今日夜间温度
+          value: '',
+          color: '#573177'
+        },
+        daywind: { //今日白天风向
+          value: '',
+          color: '#673177'
+        },
+        nightwind: { //今日夜间风向
+          value: '',
+          color: '#673177'
+        },
+        daypower: { //今日白天风力
+          value: '',
+          color: '#773177'
+        },
+        nightpower: { //今日夜间风力
+          value: '',
+          color: '#773177'
+        },
+        // 已经结婚几天
+        marriage: {
+          value: '',
+          color: '#873177'
+        },
+        // 距离下次结婚纪念日
+        nextdays: {
+          value: '',
+          color: '#873177'
+        }
+      }
+    }
+  }
+  getWeather() {
+    return new Promise((resolve, reject) => {
+      request({
+          url: 'https://restapi.amap.com/v3/weather/weatherInfo',
+          method: 'GET',
+          json: true,
+          qs: {
+            key: 'a7f29b747354aa3dd8680cc8b3207288',
+            city: '370100',
+            extensions: 'all',
+            output: 'JSON'
+          }
+        },
+        (err, rep, body) => {
+          if (body.status == 1) {
+            console.log(body.forecasts[0].casts[0])
+            // 今日日期 yy-mm-dd
+            this.requestData.data.date.value = body.forecasts[0].casts[0].date
+
+            // 今天星期几
+            switch (body.forecasts[0].casts[0].week) {
+              case '1':
+                this.requestData.data.week.value = '星期一'
+                break;
+              case '2':
+                this.requestData.data.week.value = '星期二'
+                break;
+              case '3':
+                this.requestData.data.week.value = '星期三'
+                break;
+              case '4':
+                this.requestData.data.week.value = '星期四'
+                break;
+              case '5':
+                this.requestData.data.week.value = '星期五'
+                break;
+              case '6':
+                this.requestData.data.week.value = '星期六'
+                break;
+              case '7':
+                this.requestData.data.week.value = '星期日'
+                break;
+            }
+
+            // 今天天气
+            this.requestData.data.city.value = '济南市'
+            this.requestData.data.dayweather.value = body.forecasts[0].casts[0].dayweather //白天天气
+            this.requestData.data.nightweather.value = body.forecasts[0].casts[0].nightweather //晚上天气
+            this.requestData.data.daytemp.value = body.forecasts[0].casts[0].daytemp + '℃' //今日白天温度
+            this.requestData.data.nighttemp.value = body.forecasts[0].casts[0].nighttemp + '℃' //今日夜间温度
+            this.requestData.data.daywind.value = body.forecasts[0].casts[0].daywind + '风'
+            this.requestData.data.nightwind.value = body.forecasts[0].casts[0].nightwind + '风'
+            this.requestData.data.daypower.value = body.forecasts[0].casts[0].daypower + '级' //今日白天风力
+            this.requestData.data.nightpower.value = body.forecasts[0].casts[0].nightpower + '级' //今日夜间风力
+
+            // 开始时间
+            let startDate = Date.parse('2021-11-19');
+            // 今天
+            let endDate = Date.parse(body.forecasts[0].casts[0].date);
+            // 明年11月19日
+            // 今年
+            let thisYear = new Date().getFullYear();
+            let nextDate = new Date(thisYear + 1, 11, 19)
+            // 今天距离明年11月19日的天数
+            this.requestData.data.nextdays.value = Math.ceil((nextDate.getTime() - endDate) / (24 * 60 * 60 * 1000)) + 1
+            // 已经结婚几天
+            this.requestData.data.marriage.value = (endDate - startDate) / (1 * 24 * 60 * 60 * 1000) + 1
+
+            resolve(true)
+          } else {
+            reject(false)
+          }
+        })
+    })
+  }
+
+  getToken() {
+    return new Promise((resolve, reject) => {
+      request(`https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid=${config.appID}&secret=${config.appsecret}`, function (error, response, body) {
+        if (!error && response.statusCode == 200) {
+          // console.log(body) // 请求成功的处理逻辑
+          config.access_token = JSON.parse(body).access_token;
+          // sendTemplateMsg()
+          resolve(true)
+        } else {
+          reject(false)
+        }
+      })
+    })
+  }
+
+  sendTemplateMsg() {
+    const url = `https://api.weixin.qq.com/cgi-bin/message/template/send?access_token=${config.access_token}`; //发送模板消息的接口
+    return new Promise((resolve, reject) => {
+      request({
+        url: url,
+        method: 'POST',
+        body: this.requestData,
+        json: true
+      }, function (error, response, body) {
+        if (!error && response.statusCode == 200) {
+          console.log('模板消息推送成功');
+          resolve(true)
+        } else {
+          reject(false)
+        }
+        console.log(body)
+      });
+    })
+  }
+}
+
+let wechatFun = new Wechat()
 
 
+let scheduleCronstyle = () => {
+  // console.log('scheduleCronstyle:', new Date())
+  //每分钟的第30秒定时执行一次:
+  schedule.scheduleJob('10 0 8 * * *', async () => {
+    console.log('scheduleCronstyle:', new Date())
+    try {
+      await wechatFun.getWeather()
+      await wechatFun.getToken()
+      await wechatFun.sendTemplateMsg()
+    } catch (e) {
+      console.log(e)
+    }
+  });
+}
+
+scheduleCronstyle()
+
+// 验证url时 post改为get，验证通过后再改回post
 router.post('/wechatData', async (req, res) => {
   console.log(req.method, 2222)
   if (req.method == 'POST') {
@@ -36,11 +234,12 @@ router.post('/wechatData', async (req, res) => {
     const message = await formatMessage(jsData)
     console.log(message);
     if (message.MsgType == 'text' && message.Content == '天气' && !message.Status) {
-
-      getWeather()
+      wechatFun.requestData.touser = message.FromUserName
+      await wechatFun.getWeather()
+      await wechatFun.getToken()
+      await wechatFun.sendTemplateMsg()
       res.send(``)
     }
-
   } else {
     const token = config.token; //获取配置的token
     const signature = req.query.signature; //获取微信发送请求参数signature
@@ -55,188 +254,10 @@ router.post('/wechatData', async (req, res) => {
       res.send('验证失败');
     }
   }
-
 })
 
 
 
-const requestData = { //发送模板消息的数据
-  touser: 'oHQaO5xNbT7xDIaytwv-9Cd7Cv_I',
-  template_id: 'IiMnns0J6Hcz8Jjdg5qUHoFN4uf-W8loAlttgJPtWCE',
-  // topcolor: '#FF0000',
-  data: {
-    week: {
-      value: '',
-      // color 随机颜色
-      color: '#173177'
-    },
-    date: {
-      value: '',
-      // color 随机颜色
-      color: '#273177'
-    },
-    city: {
-      value: '',
-      color: '#373177'
-    },
-    dayweather: { //白天天气
-      value: '',
-      color: '#473177'
-    },
-    nightweather: { //晚上天气
-      value: '',
-      color: '#473177'
-    },
-    daytemp: { //今日白天温度
-      value: '',
-      color: '#573177'
-    },
-    nighttemp: { //今日夜间温度
-      value: '',
-      color: '#573177'
-    },
-    daywind: { //今日白天风向
-      value: '',
-      color: '#673177'
-    },
-    nightwind: { //今日夜间风向
-      value: '',
-      color: '#673177'
-    },
-    daypower: { //今日白天风力
-      value: '',
-      color: '#773177'
-    },
-    nightpower: { //今日夜间风力
-      value: '',
-      color: '#773177'
-    },
-    // 已经结婚几天
-    marriage: {
-      value: '',
-      color: '#873177'
-    },
-    // 距离下次结婚纪念日
-    nextdays: {
-      value: '',
-      color: '#873177'
-    }
-  }
-};
-
-// router.get('/wechat', function (req, res) {
-//   console.log(req, 2)
-//   const code = req.query;
-//   console.log(code)
-// });
-
-function getWeather() {
-  //获取天气
-  request({
-      url: 'https://restapi.amap.com/v3/weather/weatherInfo',
-      method: 'GET',
-      json: true,
-      qs: {
-        key: 'a7f29b747354aa3dd8680cc8b3207288',
-        city: '370100',
-        extensions: 'all',
-        output: 'JSON'
-      }
-    },
-    (err, rep, body) => {
-
-      if (body.status == 1) {
-        console.log(body.forecasts[0].casts[0])
-        // 今日日期 yy-mm-dd
-        requestData.data.date.value = body.forecasts[0].casts[0].date
-
-        // 今天星期几
-        switch (body.forecasts[0].casts[0].week) {
-          case '1':
-            requestData.data.week.value = '星期一'
-            break;
-          case '2':
-            requestData.data.week.value = '星期二'
-            break;
-          case '3':
-            requestData.data.week.value = '星期三'
-            break;
-          case '4':
-            requestData.data.week.value = '星期四'
-            break;
-          case '5':
-            requestData.data.week.value = '星期五'
-            break;
-          case '6':
-            requestData.data.week.value = '星期六'
-            break;
-          case '7':
-            requestData.data.week.value = '星期日'
-            break;
-        }
-
-        // 今天天气
-        requestData.data.city.value = '济南市'
-        requestData.data.dayweather.value = body.forecasts[0].casts[0].dayweather //白天天气
-        requestData.data.nightweather.value = body.forecasts[0].casts[0].nightweather //晚上天气
-        requestData.data.daytemp.value = body.forecasts[0].casts[0].daytemp + '℃' //今日白天温度
-        requestData.data.nighttemp.value = body.forecasts[0].casts[0].nighttemp + '℃' //今日夜间温度
-        requestData.data.daywind.value = body.forecasts[0].casts[0].daywind + '风'
-        requestData.data.nightwind.value = body.forecasts[0].casts[0].nightwind + '风'
-        requestData.data.daypower.value = body.forecasts[0].casts[0].daypower + '级' //今日白天风力
-        requestData.data.nightpower.value = body.forecasts[0].casts[0].nightpower + '级' //今日夜间风力
-
-        // 开始时间
-        let startDate = Date.parse('2021-11-19');
-        // 今天
-        let endDate = Date.parse(body.forecasts[0].casts[0].date);
-        // 明年11月19日
-        // 今年
-        let thisYear = new Date().getFullYear();
-        let nextDate = new Date(thisYear + 1, 11, 19)
-        // 今天距离明年11月19日的天数
-        requestData.data.nextdays.value = Math.ceil((nextDate.getTime() - endDate) / (24 * 60 * 60 * 1000)) + 1
-
-        // 
-        requestData.data.marriage.value = (endDate - startDate) / (1 * 24 * 60 * 60 * 1000) + 1
-
-        console.log(requestData.data)
-        getToken()
-      }
-    })
-
-}
 
 
-function getToken() {
-  request(`https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid=${config.appID}&secret=${config.appsecret}`, function (error, response, body) {
-    if (!error && response.statusCode == 200) {
-      console.log(body) // 请求成功的处理逻辑
-      config.access_token = JSON.parse(body).access_token;
-      sendTemplateMsg()
-    }
-  })
-
-}
-
-
-function sendTemplateMsg(openid, access_token) {
-
-  const url = `https://api.weixin.qq.com/cgi-bin/message/template/send?access_token=${config.access_token}`; //发送模板消息的接口
-
-  console.log('发送！')
-  request({
-    url: url,
-    method: 'POST',
-    body: requestData,
-    json: true
-  }, function (error, response, body) {
-    if (!error && response.statusCode == 200) {
-      console.log('模板消息推送成功');
-    } else {
-
-    }
-    console.log(body)
-  });
-}
 module.exports = router;
