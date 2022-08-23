@@ -4,7 +4,7 @@
  * @Author: 937bb
  * @Date: 2022-08-23 08:37:37
  * @LastEditors: 937bb
- * @LastEditTime: 2022-08-23 14:33:26
+ * @LastEditTime: 2022-08-23 14:34:32
 -->
 # wechat_weather
 
@@ -14,7 +14,7 @@
 
 *    *    *    *    *    * <Br/>
 &nbsp; ┬ &nbsp;&nbsp;&nbsp;  ┬ &nbsp;&nbsp;&nbsp;   ┬  &nbsp;&nbsp; &nbsp; ┬ &nbsp;&nbsp; &nbsp;  ┬  &nbsp;&nbsp;&nbsp;  ┬<Br/>
-│    │    │    │    │    |<Br/>
+&nbsp;&nbsp;│    │    │    │    │    |<Br/>
 │    │    │    │    │    └ 一周的星期 (0 - 7) (0 or 7 is Sun)<Br/>
 │    │    │    │    └───── 月份 (1 - 12)<Br/>
 │    │    │    └────────── 月份中的日子 (1 - 31)<Br/>
