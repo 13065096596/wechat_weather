@@ -4,7 +4,11 @@
  * @Author: 937bb
  * @Date: 2022-08-23 08:37:37
  * @LastEditors: 937bb
- * @LastEditTime: 2022-08-23 14:34:32
+<<<<<<< HEAD
+ * @LastEditTime: 2022-08-23 14:35:35
+=======
+ * @LastEditTime: 2022-08-23 14:33:26
+>>>>>>> 822fbf2deb29be99f90e27b9d7c2a99d4d211931
 -->
 # wechat_weather
 
@@ -13,8 +17,10 @@
 0.  已添加定时任务（每天早上8点） 可以自己修改时间 <Br/>
 
 *    *    *    *    *    * <Br/>
+
 &nbsp; ┬ &nbsp;&nbsp;&nbsp;  ┬ &nbsp;&nbsp;&nbsp;   ┬  &nbsp;&nbsp; &nbsp; ┬ &nbsp;&nbsp; &nbsp;  ┬  &nbsp;&nbsp;&nbsp;  ┬<Br/>
 &nbsp;&nbsp;│    │    │    │    │    |<Br/>
+│    │    │    │    │    |<Br/>
 │    │    │    │    │    └ 一周的星期 (0 - 7) (0 or 7 is Sun)<Br/>
 │    │    │    │    └───── 月份 (1 - 12)<Br/>
 │    │    │    └────────── 月份中的日子 (1 - 31)<Br/>
