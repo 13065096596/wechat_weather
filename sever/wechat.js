@@ -4,7 +4,7 @@
  * @Author: 937bb
  * @Date: 2022-08-22 09:21:23
  * @LastEditors: 937bb
- * @LastEditTime: 2022-08-23 09:39:44
+ * @LastEditTime: 2022-08-23 12:19:28
  */
 
 const query = require('./db.js');
@@ -18,8 +18,9 @@ const {
   formatMessage
 } = require('../utils/getWechatData.js')
 const schedule = require('node-schedule');
+const cityNumList = require('../utils/cityNum.js')
 
-
+// console.log(cityNumList);
 
 let config = { //配置信息
   appID: "wx204b87a72dbd27d9",
@@ -36,7 +37,9 @@ let config = { //配置信息
 };
 
 class Wechat {
-  constructor(touser, template_id) {
+  constructor(city, cityNum, touser, template_id) {
+    this.city = city
+    this.cityNum = cityNum
     this.requestData = { //发送模板消息的数据
       touser: touser,
       template_id: template_id, //模板编号
@@ -100,13 +103,15 @@ class Wechat {
   }
   getWeather() {
     return new Promise((resolve, reject) => {
+      console.log(this.cityNum)
+      return false
       request({
           url: 'https://restapi.amap.com/v3/weather/weatherInfo',
           method: 'GET',
           json: true,
           qs: {
             key: 'a7f29b747354aa3dd8680cc8b3207288',
-            city: config.cityNum,
+            city: this.cityNum,
             extensions: 'all',
             output: 'JSON'
           }
@@ -114,7 +119,7 @@ class Wechat {
         (err, rep, body) => {
           console.log(err);
           if (body.status == 1) {
-            console.log(body.forecasts[0].casts)
+            // console.log(body.forecasts[0].casts)
 
             // 今日日期 yy-mm-dd
             var date = new Date();
@@ -135,7 +140,7 @@ class Wechat {
             // 获取今天的天气
             body.forecasts[0].casts.map((v, i) => {
               if (v.date == this.requestData.data.date.value) {
-                this.requestData.data.city.value = config.city
+                this.requestData.data.city.value = this.city
                 this.requestData.data.dayweather.value = body.forecasts[0].casts[i].dayweather //白天天气
                 this.requestData.data.nightweather.value = body.forecasts[0].casts[i].nightweather //晚上天气
                 this.requestData.data.daytemp.value = body.forecasts[0].casts[i].daytemp + '℃' //今日白天温度
@@ -184,9 +189,12 @@ class Wechat {
 
   sendTemplateMsg(msg) {
     const url = `https://api.weixin.qq.com/cgi-bin/message/template/send?access_token=${config.access_token}`; //发送模板消息的接口
-    if (msg) {
+    if (msg == '我爱你') {
       this.requestData.template_id = '9i-HmP3ievEeNPpX0o8kJRzc9PxcSpgN0yWKkh1kI8U' //msg存在切换指定模板
+    } else if (msg == '天气') {
+      this.requestData.template_id = '2dkJhlBv7PYUbQnPnRuLz8vJCI2nhbdz4-Su-h8keew' //msg
     }
+    console.log()
     return new Promise((resolve, reject) => {
       request({
         url: url,
@@ -205,12 +213,12 @@ class Wechat {
   }
 }
 
-let wechatFun = new Wechat(config.touser, config.template_id)
+let wechatFun = new Wechat(config.city, config.cityNum, config.touser, config.template_id)
 
 
 let scheduleCronstyle = () => {
   // console.log('scheduleCronstyle:', new Date())
-  //每分钟的第30秒定时执行一次:
+  //每天早上8点0分10秒开始推送 （最新天气是8点更新 晚10秒可获取最新数据）
   schedule.scheduleJob('10 0 8 * * *', async () => {
     console.log('scheduleCronstyle:', new Date())
     try {
@@ -227,21 +235,55 @@ scheduleCronstyle()
 
 // 验证url时 post改为get，验证通过后再改回post
 router.post('/wechatData', async (req, res) => {
-  // console.log(req.method, 2222)
+
   if (req.method == 'POST') {
     const xmlData = await getUserDataAsync(req)
     const jsData = await parseXMLAsync(xmlData)
     const message = await formatMessage(jsData)
-    if (message.MsgType == 'text' && message.Content == '我爱你' && !message.Status) {
+    console.log(message)
+
+    if (message.MsgType == 'text' && !message.Status) {
+
       wechatFun.requestData.touser = message.FromUserName
+
+      let msg = ''
+
+      if (message.Content == '我爱你') {
+
+        msg = '我爱你'
+        wechatFun.city  = '济南'
+        wechatFun.cityNum = 370100
+        
+      } else if (message.Content.indexOf('天气') > -1) {
+
+        msg = '天气'
+
+        wechatFun.city = message.Content.slice(0, message.Content.indexOf('天气'))
+
+        cityNumList.map((v) => {
+          if (v.name == wechatFun.requestData.city) {
+            wechatFun.cityNum = v.adcode
+          }
+        })
+
+      }
       try {
         await wechatFun.getWeather()
         await wechatFun.getToken()
-        await wechatFun.sendTemplateMsg('我爱你')
+        await wechatFun.sendTemplateMsg(msg)
+        res.send(`success`)
       } catch (err) {
         console.log(err)
       }
-      res.send(``)
+    } else {
+      // try {
+      //   await wechatFun.getWeather()
+      //   await wechatFun.getToken()
+      //   await wechatFun.sendTemplateMsg()
+      //   res.send(`success`)
+      // } catch (err) {
+      //   console.log(err)
+      // }
     }
   } else {
     const token = config.token; //获取配置的token
