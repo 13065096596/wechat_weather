@@ -30,7 +30,7 @@
 1.  找到 sever/wechat.js 中 config 进行配置个人信息
 2.  微信测试号管理 添加URL时，将 243行 router.post 改为 router.get
 
-3.  49行 data{} 中的数据可以自己添加 格式如实例， \n
+3.  49行 data{} 中的数据可以自己添加 格式如实例， 
     week:{
       value:'xxxxxx', 
       color:'#xxxxxx'       
