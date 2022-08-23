@@ -1,3 +1,11 @@
+<!--
+ * @Descripttion: 
+ * @version: 
+ * @Author: 937bb
+ * @Date: 2022-08-23 08:37:37
+ * @LastEditors: 937bb
+ * @LastEditTime: 2022-08-23 13:47:41
+-->
 # wechat_weather
 
 #### 介绍
@@ -11,13 +19,13 @@ Gitee 是 OSCHINA 推出的基于 Git 的代码托管平台（同时支持 SVN�
 
 #### 安装教程
 
-1.  xxxx
-2.  xxxx
-3.  xxxx
+0.  欢迎使用937bb的微信推送项目
+1.  npm install
+2.  npm run start
 
 #### 使用说明
 
-1.  xxxx
+1.  找到 sever/wechat.js 中 config 进行配置个人信息
 2.  xxxx
 3.  xxxx
 
