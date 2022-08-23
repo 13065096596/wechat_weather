@@ -4,7 +4,7 @@
  * @Author: 937bb
  * @Date: 2022-08-22 09:21:23
  * @LastEditors: 937bb
- * @LastEditTime: 2022-08-23 13:45:13
+ * @LastEditTime: 2022-08-23 14:08:45
  */
 
 const query = require('./db.js');
@@ -46,11 +46,11 @@ class Wechat {
       touser: touser,
       template_id: template_id, //模板编号
       data: {
-        week: {
+        week: {  // 今天周几
           value: '',
           color: '#173177'
         },
-        date: {
+        date: { //今天日期
           value: '',
           color: '#273177'
         },

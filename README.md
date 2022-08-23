@@ -4,14 +4,13 @@
  * @Author: 937bb
  * @Date: 2022-08-23 08:37:37
  * @LastEditors: 937bb
- * @LastEditTime: 2022-08-23 14:03:38
+ * @LastEditTime: 2022-08-23 14:13:29
 -->
 # wechat_weather
 
 #### 介绍
-{**以下是 Gitee 平台说明，您可以替换此简介**
-Gitee 是 OSCHINA 推出的基于 Git 的代码托管平台（同时支持 SVN）。专为开发者提供稳定、高效、安全的云端软件开发协作平台
-无论是个人、团队、或是企业，都能够用 Gitee 实现代码托管、项目管理、协作开发。企业项目请看 [https://gitee.com/enterprises](https://gitee.com/enterprises)}
+
+0.  本项目已添加定时任务（每天早上8点）
 
 #### 软件架构
 软件架构说明
@@ -30,7 +29,17 @@ Gitee 是 OSCHINA 推出的基于 Git 的代码托管平台（同时支持 SVN�
 
 1.  找到 sever/wechat.js 中 config 进行配置个人信息
 2.  微信测试号管理 添加URL时，将 243行 router.post 改为 router.get
-3.  有问题留言管理员
+
+3.  49行 data{} 中的数据可以自己添加 格式如实例， 
+    week:{
+      value:'xxxxxx', 
+      color:'#xxxxxx'       
+    }
+    week: 对应微信测试号管理中 模板参数名，即： {{week.DATA}}
+    value: 对应week的数据内容
+    color: 对应week数据内容的颜色 （rgb格式）
+
+4.  项目如有bug问题，请留言管理员
 
 #### 参与贡献
 
