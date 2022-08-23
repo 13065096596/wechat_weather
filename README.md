@@ -4,7 +4,7 @@
  * @Author: 937bb
  * @Date: 2022-08-23 08:37:37
  * @LastEditors: 937bb
- * @LastEditTime: 2022-08-23 13:47:41
+ * @LastEditTime: 2022-08-23 14:03:38
 -->
 # wechat_weather
 
@@ -19,15 +19,18 @@ Gitee 是 OSCHINA 推出的基于 Git 的代码托管平台（同时支持 SVN�
 
 #### 安装教程
 
-0.  欢迎使用937bb的微信推送项目
-1.  npm install
-2.  npm run start
+0.  欢迎使用937bb的微信推送项目，本项目使用了node开发，仅供测试使用
+1.  另需第三方软件（内网穿透工具，将本地网络开放至公网），自行下载。
+作者使用的是花生壳（开通了6元HTTPS功能）
+2.  文件夹根目录中 shift + 鼠标右键 打开cmd窗口 输入 npm install 并回车
+3.  文件夹根目录中 shift + 鼠标右键 打开cmd窗口 输入 npm run start 并回车 可以看到 本地IPV4地址与端口443 并使用内网穿透工具进行解析
+4.  
 
-#### 使用说明
+#### wechat.js 使用说明 
 
 1.  找到 sever/wechat.js 中 config 进行配置个人信息
-2.  xxxx
-3.  xxxx
+2.  微信测试号管理 添加URL时，将 243行 router.post 改为 router.get
+3.  有问题留言管理员
 
 #### 参与贡献
 
