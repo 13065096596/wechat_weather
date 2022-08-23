@@ -4,7 +4,7 @@
  * @Author: 937bb
  * @Date: 2022-08-23 08:37:37
  * @LastEditors: 937bb
- * @LastEditTime: 2022-08-23 14:13:29
+ * @LastEditTime: 2022-08-23 14:15:06
 -->
 # wechat_weather
 
@@ -30,7 +30,7 @@
 1.  找到 sever/wechat.js 中 config 进行配置个人信息
 2.  微信测试号管理 添加URL时，将 243行 router.post 改为 router.get
 
-3.  49行 data{} 中的数据可以自己添加 格式如实例， 
+3.  49行 data{} 中的数据可以自己添加 格式如实例， \n
     week:{
       value:'xxxxxx', 
       color:'#xxxxxx'       
