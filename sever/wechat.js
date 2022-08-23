@@ -4,7 +4,7 @@
  * @Author: 937bb
  * @Date: 2022-08-22 09:21:23
  * @LastEditors: 937bb
- * @LastEditTime: 2022-08-23 12:19:28
+ * @LastEditTime: 2022-08-23 13:45:13
  */
 
 const query = require('./db.js');
@@ -18,7 +18,10 @@ const {
   formatMessage
 } = require('../utils/getWechatData.js')
 const schedule = require('node-schedule');
-const cityNumList = require('../utils/cityNum.js')
+const cityNumList = require('../utils/cityNum.js');
+const {
+  resolve
+} = require('path');
 
 // console.log(cityNumList);
 
@@ -27,13 +30,12 @@ let config = { //配置信息
   appsecret: "be10c100d5d9c6e24286548bc2c5427a",
   //这里你得填写你自己设置的Token值
   token: "wangjiahao",
-  grant_type: 'client_credential', //默认
-  access_token: '',
-  openid: '',
-  city: '济南',
-  cityNum: '370100',
-  touser: 'oHQaO5xNbT7xDIaytwv-9Cd7Cv_I', //接受信息的用OpenId
-  template_id: 'UIMsOvjq_O9OeuLA1lYRym37-KwvqPXvTkLJuepWuoY' //模板编号
+  grant_type: 'client_credential', //默认不用修改
+  access_token: '', //不用管
+  city: '济南', //（必填）
+  cityNum: '370100', // 在utils/cityNum中找到自己的城市编码（必填,）
+  touser: 'oHQaO5xNbT7xDIaytwv-9Cd7Cv_I',  //接受信息的用OpenId 输入 微信公众测试号中 微信扫码后的编码 （必填）
+  template_id: 'UIMsOvjq_O9OeuLA1lYRym37-KwvqPXvTkLJuepWuoY' // 消息模板编号 （必填）
 };
 
 class Wechat {
@@ -103,8 +105,8 @@ class Wechat {
   }
   getWeather() {
     return new Promise((resolve, reject) => {
-      console.log(this.cityNum)
-      return false
+      // console.log(this.cityNum)
+      // return false
       request({
           url: 'https://restapi.amap.com/v3/weather/weatherInfo',
           method: 'GET',
@@ -193,6 +195,8 @@ class Wechat {
       this.requestData.template_id = '9i-HmP3ievEeNPpX0o8kJRzc9PxcSpgN0yWKkh1kI8U' //msg存在切换指定模板
     } else if (msg == '天气') {
       this.requestData.template_id = '2dkJhlBv7PYUbQnPnRuLz8vJCI2nhbdz4-Su-h8keew' //msg
+    }else{
+      this.requestData.template_id = config.template_id
     }
     console.log()
     return new Promise((resolve, reject) => {
@@ -222,6 +226,8 @@ let scheduleCronstyle = () => {
   schedule.scheduleJob('10 0 8 * * *', async () => {
     console.log('scheduleCronstyle:', new Date())
     try {
+      wechatFun.city = config.city
+      wechatFun.cityNum = config.cityNum
       await wechatFun.getWeather()
       await wechatFun.getToken()
       await wechatFun.sendTemplateMsg()
@@ -241,7 +247,6 @@ router.post('/wechatData', async (req, res) => {
     const jsData = await parseXMLAsync(xmlData)
     const message = await formatMessage(jsData)
     console.log(message)
-
     if (message.MsgType == 'text' && !message.Status) {
 
       wechatFun.requestData.touser = message.FromUserName
@@ -251,23 +256,38 @@ router.post('/wechatData', async (req, res) => {
       if (message.Content == '我爱你') {
 
         msg = '我爱你'
-        wechatFun.city  = '济南'
-        wechatFun.cityNum = 370100
-        
+        wechatFun.city = config.city
+        wechatFun.cityNum = config.cityNum
       } else if (message.Content.indexOf('天气') > -1) {
-
+        let foryes = false
         msg = '天气'
 
         wechatFun.city = message.Content.slice(0, message.Content.indexOf('天气'))
 
-        cityNumList.map((v) => {
-          if (v.name == wechatFun.requestData.city) {
+        await cityNumList.map((v) => {
+          if (v.name == wechatFun.city) {
             wechatFun.cityNum = v.adcode
+            foryes = true
           }
         })
 
+        if (!foryes) {
+          let send = `<xml>
+          <ToUserName><![CDATA[${message.FromUserName}]]></ToUserName>
+          <FromUserName><![CDATA[${message.ToUserName}]]></FromUserName>
+          <CreateTime>${Date.now()}</CreateTime>
+          <MsgType><![CDATA[text]]></MsgType>
+          <Content><![CDATA[请输入地级市名称加天气，如："济南天气"，"北京天气"，"深圳天气"等]]></Content>
+          </xml>`
+          res.send(send)
+          return false
+        }
+      } else {
+        res.send(`success`)
+        return false
       }
       try {
+        
         await wechatFun.getWeather()
         await wechatFun.getToken()
         await wechatFun.sendTemplateMsg(msg)
@@ -275,16 +295,7 @@ router.post('/wechatData', async (req, res) => {
       } catch (err) {
         console.log(err)
       }
-    } else {
-      // try {
-      //   await wechatFun.getWeather()
-      //   await wechatFun.getToken()
-      //   await wechatFun.sendTemplateMsg()
-      //   res.send(`success`)
-      // } catch (err) {
-      //   console.log(err)
-      // }
-    }
+    } else {}
   } else {
     const token = config.token; //获取配置的token
     const signature = req.query.signature; //获取微信发送请求参数signature
