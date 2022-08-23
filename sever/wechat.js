@@ -4,7 +4,7 @@
  * @Author: 937bb
  * @Date: 2022-08-22 09:21:23
  * @LastEditors: 937bb
- * @LastEditTime: 2022-08-23 14:08:45
+ * @LastEditTime: 2022-08-23 14:22:01
  */
 
 const query = require('./db.js');
@@ -35,7 +35,8 @@ let config = { //配置信息
   city: '济南', //（必填）
   cityNum: '370100', // 在utils/cityNum中找到自己的城市编码（必填,）
   touser: 'oHQaO5xNbT7xDIaytwv-9Cd7Cv_I',  //接受信息的用OpenId 输入 微信公众测试号中 微信扫码后的编码 （必填）
-  template_id: 'UIMsOvjq_O9OeuLA1lYRym37-KwvqPXvTkLJuepWuoY' // 消息模板编号 （必填）
+  template_id: 'UIMsOvjq_O9OeuLA1lYRym37-KwvqPXvTkLJuepWuoY', // 消息模板编号 （必填）
+  scheduler_time:'10 0 8 * * *'
 };
 
 class Wechat {
@@ -223,7 +224,7 @@ let wechatFun = new Wechat(config.city, config.cityNum, config.touser, config.te
 let scheduleCronstyle = () => {
   // console.log('scheduleCronstyle:', new Date())
   //每天早上8点0分10秒开始推送 （最新天气是8点更新 晚10秒可获取最新数据）
-  schedule.scheduleJob('10 0 8 * * *', async () => {
+  schedule.scheduleJob(config.scheduler_time, async () => {
     console.log('scheduleCronstyle:', new Date())
     try {
       wechatFun.city = config.city
