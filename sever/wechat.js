@@ -4,7 +4,7 @@
  * @Author: 937bb
  * @Date: 2022-08-22 09:21:23
  * @LastEditors: 937bb
- * @LastEditTime: 2022-08-23 14:22:01
+ * @LastEditTime: 2022-08-23 14:26:12
  */
 
 const query = require('./db.js');
@@ -19,24 +19,21 @@ const {
 } = require('../utils/getWechatData.js')
 const schedule = require('node-schedule');
 const cityNumList = require('../utils/cityNum.js');
-const {
-  resolve
-} = require('path');
 
 // console.log(cityNumList);
 
 let config = { //配置信息
-  appID: "wx204b87a72dbd27d9",
-  appsecret: "be10c100d5d9c6e24286548bc2c5427a",
+  appID: "wx204b87a72dbd27d9", //（必填）
+  appsecret: "be10c100d5d9c6e24286548bc2c5427a", //（必填）
   //这里你得填写你自己设置的Token值
-  token: "wangjiahao",
+  token: "wangjiahao", //（必填）
   grant_type: 'client_credential', //默认不用修改
   access_token: '', //不用管
   city: '济南', //（必填）
   cityNum: '370100', // 在utils/cityNum中找到自己的城市编码（必填,）
-  touser: 'oHQaO5xNbT7xDIaytwv-9Cd7Cv_I',  //接受信息的用OpenId 输入 微信公众测试号中 微信扫码后的编码 （必填）
+  touser: 'oHQaO5xNbT7xDIaytwv-9Cd7Cv_I', //推送目标的OpenId  微信公众测试号中 微信扫码后的编码 （必填）
   template_id: 'UIMsOvjq_O9OeuLA1lYRym37-KwvqPXvTkLJuepWuoY', // 消息模板编号 （必填）
-  scheduler_time:'10 0 8 * * *'
+  scheduler_time: '10 0 8 * * *' //（每天早上八点零分十秒,如要修改请看项目说明文件 或 百度搜索 node schedule 即可）
 };
 
 class Wechat {
@@ -47,7 +44,7 @@ class Wechat {
       touser: touser,
       template_id: template_id, //模板编号
       data: {
-        week: {  // 今天周几
+        week: { // 今天周几
           value: '',
           color: '#173177'
         },
@@ -196,7 +193,7 @@ class Wechat {
       this.requestData.template_id = '9i-HmP3ievEeNPpX0o8kJRzc9PxcSpgN0yWKkh1kI8U' //msg存在切换指定模板
     } else if (msg == '天气') {
       this.requestData.template_id = '2dkJhlBv7PYUbQnPnRuLz8vJCI2nhbdz4-Su-h8keew' //msg
-    }else{
+    } else {
       this.requestData.template_id = config.template_id
     }
     console.log()
@@ -288,7 +285,7 @@ router.post('/wechatData', async (req, res) => {
         return false
       }
       try {
-        
+
         await wechatFun.getWeather()
         await wechatFun.getToken()
         await wechatFun.sendTemplateMsg(msg)
