@@ -4,7 +4,7 @@
  * @Author: 王家豪
  * @Date: 2022-08-21 23:34:40
  * @LastEditors: 937bb
- * @LastEditTime: 2022-08-24 23:29:51
+ * @LastEditTime: 2022-08-24 23:32:33
  */
 const port = 443;
 const fs = require('fs');
@@ -18,8 +18,6 @@ const {
 } = require('./utils/getIPv4')
 let ipv4s = getIPv4()
 const {
-  debugLog,
-  log,
   logFunction
 } = require('./utils/log4js.js')
 

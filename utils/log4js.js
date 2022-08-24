@@ -4,7 +4,7 @@
  * @Author: 937bb
  * @Date: 2022-08-24 22:14:10
  * @LastEditors: 937bb
- * @LastEditTime: 2022-08-24 23:28:35
+ * @LastEditTime: 2022-08-24 23:32:18
  */
 const log4js = require('log4js');
 
@@ -78,38 +78,14 @@ log4js.configure({
   }
 })
 
-//debug日志
-let debugLog = log4js.getLogger('debug');
-// debugLog.debug('~~111~~debug log~~111~~');
 
-//info日志
-let infoLog = log4js.getLogger('info');
-// infoLog.info('~~222~~info log~~222~~');
-
-//err日志
-let errorLog = log4js.getLogger('err');
-// errorLog.error('~~333~~err log~~333~~');
-
-//fatal日志
-let fatalLog = log4js.getLogger('fatal');
-// fatalLog.fatal('cuo');
-
-let log = log4js.getLogger();
 const logFunction = (title, fun, msg) => {
   let log = log4js.getLogger(title)
   if (fun == 'all') {
     log.all(msg);
   }
 }
-// logFunction('111', 'all', 'ccc')
-// console.log(allLog)
-// allLog.all('报错了')
 
 module.exports = {
-  debugLog,
-  infoLog,
-  errorLog,
-  fatalLog,
-  log,
   logFunction
 }
