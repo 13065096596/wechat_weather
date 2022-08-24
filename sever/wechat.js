@@ -4,7 +4,7 @@
  * @Author: 937bb
  * @Date: 2022-08-22 09:21:23
  * @LastEditors: 937bb
- * @LastEditTime: 2022-08-23 14:26:12
+ * @LastEditTime: 2022-08-24 15:23:13
  */
 
 const query = require('./db.js');
@@ -63,7 +63,7 @@ class Wechat {
         nightweather: { //晚上天气
           value: '',
           color: '#473177'
-        },
+        }, 
         daytemp: { //今日白天温度
           value: '',
           color: '#573177'
@@ -248,7 +248,6 @@ router.post('/wechatData', async (req, res) => {
     if (message.MsgType == 'text' && !message.Status) {
 
       wechatFun.requestData.touser = message.FromUserName
-
       let msg = ''
 
       if (message.Content == '我爱你') {
