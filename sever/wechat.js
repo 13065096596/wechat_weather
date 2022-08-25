@@ -4,10 +4,9 @@
  * @Author: 937bb
  * @Date: 2022-08-22 09:21:23
  * @LastEditors: 937bb
- * @LastEditTime: 2022-08-24 15:23:13
+ * @LastEditTime: 2022-08-25 08:44:24
  */
 
-const query = require('./db.js');
 const express = require('express')
 const sha1 = require('sha1');
 const request = require('request');
@@ -226,6 +225,7 @@ let scheduleCronstyle = () => {
     try {
       wechatFun.city = config.city
       wechatFun.cityNum = config.cityNum
+      wechatFun.requestData.touser = config.touser
       await wechatFun.getWeather()
       await wechatFun.getToken()
       await wechatFun.sendTemplateMsg()
