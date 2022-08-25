@@ -4,7 +4,7 @@
  * @Author: 937bb
  * @Date: 2022-08-22 09:21:23
  * @LastEditors: 937bb
- * @LastEditTime: 2022-08-25 08:45:52
+ * @LastEditTime: 2022-08-25 17:18:20
  */
 
 const express = require('express')
@@ -17,9 +17,10 @@ const {
   formatMessage
 } = require('../utils/getWechatData.js')
 const schedule = require('node-schedule');
+const {
+  logFunction
+} = require('../utils/log4js')
 const cityNumList = require('../utils/cityNum.js');
-
-// console.log(cityNumList);
 
 let config = { //配置信息
   appID: "wx204b87a72dbd27d9", //（必填）
@@ -62,7 +63,7 @@ class Wechat {
         nightweather: { //晚上天气
           value: '',
           color: '#473177'
-        }, 
+        },
         daytemp: { //今日白天温度
           value: '',
           color: '#573177'
@@ -116,7 +117,6 @@ class Wechat {
           }
         },
         (err, rep, body) => {
-          console.log(err);
           if (body.status == 1) {
             // console.log(body.forecasts[0].casts)
 
@@ -195,7 +195,6 @@ class Wechat {
     } else {
       this.requestData.template_id = config.template_id
     }
-    console.log()
     return new Promise((resolve, reject) => {
       request({
         url: url,
@@ -205,6 +204,7 @@ class Wechat {
       }, function (error, response, body) {
         if (!error && response.statusCode == 200) {
           console.log('模板消息推送成功');
+
           resolve(true)
         } else {
           reject(false)
@@ -221,7 +221,7 @@ let scheduleCronstyle = () => {
   // console.log('scheduleCronstyle:', new Date())
   //每天早上8点0分10秒开始推送 （最新天气是8点更新 晚10秒可获取最新数据）
   schedule.scheduleJob(config.scheduler_time, async () => {
-    console.log('scheduleCronstyle:', new Date())
+
     try {
       wechatFun.city = config.city
       wechatFun.cityNum = config.cityNum
@@ -229,26 +229,34 @@ let scheduleCronstyle = () => {
       await wechatFun.getWeather()
       await wechatFun.getToken()
       await wechatFun.sendTemplateMsg()
+
+      // 日志记录发送
+      logFunction('schedule', {
+        time: new Date(),
+        touser: config.touser
+      })
     } catch (e) {
-      console.log(e)
+      logFunction('schedule', {
+        info: e,
+        cityNum: config.cityNum,
+        touser: config.touser,
+      }, 'error')
+
     }
   });
 }
-
 
 scheduleCronstyle()
 
 // 验证url时 post改为get，验证通过后再改回post
 router.post('/wechatData', async (req, res) => {
-
   if (req.method == 'POST') {
     const xmlData = await getUserDataAsync(req)
     const jsData = await parseXMLAsync(xmlData)
     const message = await formatMessage(jsData)
-    console.log(message)
     if (message.MsgType == 'text' && !message.Status) {
-
       wechatFun.requestData.touser = message.FromUserName
+
       let msg = ''
 
       if (message.Content == '我爱你') {
@@ -278,22 +286,59 @@ router.post('/wechatData', async (req, res) => {
           <Content><![CDATA[请输入地级市名称加天气，如："济南天气"，"北京天气"，"深圳天气"等]]></Content>
           </xml>`
           res.send(send)
+          logFunction('keyword', {
+            time: new Date(),
+            touser: message.FromUserName,
+            msg: '天气关键词不正确',
+            keyword: message.Content
+          }, 'error')
           return false
         }
       } else {
-        res.send(`success`)
+        let send = `<xml>
+          <ToUserName><![CDATA[${message.FromUserName}]]></ToUserName>
+          <FromUserName><![CDATA[${message.ToUserName}]]></FromUserName>
+          <CreateTime>${Date.now()}</CreateTime>
+          <MsgType><![CDATA[text]]></MsgType>
+          <Content><![CDATA[未找到当前关键词，请重新输入；已有功能如下：'每日天气推送'，'我爱你主动回复'，'天气查询']]></Content>
+          </xml>`
+        res.send(send)
+        logFunction('keyword', {
+          time: new Date(),
+          touser: message.FromUserName,
+          msg: '关键词不正确',
+          keyword: msg
+        }, 'error')
         return false
       }
       try {
-
         await wechatFun.getWeather()
         await wechatFun.getToken()
         await wechatFun.sendTemplateMsg(msg)
+        logFunction('keyword', {
+          time: new Date(),
+          touser: message.FromUserName,
+          keyword: message.Content
+        }, 'trace')
         res.send(`success`)
+
       } catch (err) {
-        console.log(err)
+        logFunction('keyword', {
+          time: new Date(),
+          touser: message.FromUserName,
+          msg: err,
+          keyword: message.Content
+        }, 'error')
       }
-    } else {}
+    } else if(message.Content){
+      
+      logFunction('keyword', {
+        time: new Date(),
+        touser: message.FromUserName,
+        msg: '不是文字信息',
+        keyword: message.Content
+      }, 'error')
+    }
   } else {
     const token = config.token; //获取配置的token
     const signature = req.query.signature; //获取微信发送请求参数signature
