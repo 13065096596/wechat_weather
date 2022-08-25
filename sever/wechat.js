@@ -4,7 +4,7 @@
  * @Author: 937bb
  * @Date: 2022-08-22 09:21:23
  * @LastEditors: 937bb
- * @LastEditTime: 2022-08-25 08:44:24
+ * @LastEditTime: 2022-08-25 08:45:52
  */
 
 const express = require('express')
@@ -234,6 +234,7 @@ let scheduleCronstyle = () => {
     }
   });
 }
+
 
 scheduleCronstyle()
 
