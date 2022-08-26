@@ -1,12 +1,11 @@
 /*
  * @Descripttion: 
  * @version: 
- * @Author: 王家豪
+ * @Author: 937bb
  * @Date: 2022-08-21 23:34:40
  * @LastEditors: 937bb
- * @LastEditTime: 2022-08-24 23:33:58
- */
-const port = 443;
+*/
+const port = 5000;
 const fs = require('fs');
 const path = require('path');
 const bodyParser = require('body-parser');
@@ -25,16 +24,21 @@ const {
 
 app.all('*', function (req, res, next) {
   // res.send(req)
+  let msg = {
+    method: req.method,
+    url: req.url,
+    body: req.body,
+    params: req.params,
+    query: req.query
+  }
+
+  logFunction('http', msg)
   res.header('Access-Control-Allow-Origin', '*');
   res.header('Access-Control-Allow-Headers', 'Content-Type, Content-Length, Authorization, Accept, X-Requested-With , yourHeaderFeild');
   res.header('Access-Control-Allow-Methods', 'PUT, POST, GET, DELETE, OPTIONS');
   if (req.method == 'OPTIONS') {
     res.send(200);
   } else {
- 
-    logFunction('http','all',{method:req.method,url:req.url})
-    res.send(req.method);
-
     next();
   }
 });

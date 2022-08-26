@@ -1,0 +1,209 @@
+[2022-08-25T17:09:21.988] [ERROR] keyword - {
+  time: 2022-08-25T09:09:21.988Z,
+  touser: 'oHQaO5xNbT7xDIaytwv-9Cd7Cv_I',
+  msg: '关键词不正确',
+  keyword: ''
+}
+[2022-08-25T17:10:18.408] [ERROR] keyword - {
+  time: 2022-08-25T09:10:18.408Z,
+  touser: 'oHQaO5xNbT7xDIaytwv-9Cd7Cv_I',
+  msg: '关键词不正确',
+  keyword: ''
+}
+[2022-08-25T17:10:35.340] [ERROR] keyword - {
+  time: 2022-08-25T09:10:35.340Z,
+  touser: 'oHQaO5xNbT7xDIaytwv-9Cd7Cv_I',
+  msg: '关键词不正确',
+  keyword: '天气'
+}
+[2022-08-25T17:11:56.370] [ERROR] keyword - {
+  time: 2022-08-25T09:11:56.370Z,
+  touser: 'oHQaO5xNbT7xDIaytwv-9Cd7Cv_I',
+  msg: '关键词不正确',
+  keyword: '东北'
+}
+[2022-08-25T17:12:24.355] [ERROR] keyword - {
+  time: 2022-08-25T09:12:24.355Z,
+  touser: 'oHQaO5xNbT7xDIaytwv-9Cd7Cv_I',
+  msg: '天气关键词不正确',
+  keyword: '东北天气'
+}
+[2022-08-25T17:15:58.825] [TRACE] keyword - {
+  time: 2022-08-25T09:15:58.825Z,
+  touser: 'oHQaO5xNbT7xDIaytwv-9Cd7Cv_I',
+  keyword: '天气'
+}
+[2022-08-25T17:16:36.580] [TRACE] keyword - {
+  time: 2022-08-25T09:16:36.580Z,
+  touser: 'oHQaO5xNbT7xDIaytwv-9Cd7Cv_I',
+  keyword: '济南天气'
+}
+[2022-08-25T17:17:28.880] [TRACE] keyword - {
+  time: 2022-08-25T09:17:28.880Z,
+  touser: 'oHQaO5xNbT7xDIaytwv-9Cd7Cv_I',
+  keyword: '济南天气'
+}
+[2022-08-25T17:17:29.322] [ERROR] keyword - {
+  time: 2022-08-25T09:17:29.322Z,
+  touser: 'oHQaO5xNbT7xDIaytwv-9Cd7Cv_I',
+  msg: '不是文字信息',
+  keyword: undefined
+}
+[2022-08-25T17:17:34.351] [ERROR] keyword - {
+  time: 2022-08-25T09:17:34.351Z,
+  touser: 'oHQaO5xNbT7xDIaytwv-9Cd7Cv_I',
+  msg: '不是文字信息',
+  keyword: undefined
+}
+[2022-08-25T17:17:39.345] [ERROR] keyword - {
+  time: 2022-08-25T09:17:39.345Z,
+  touser: 'oHQaO5xNbT7xDIaytwv-9Cd7Cv_I',
+  msg: '不是文字信息',
+  keyword: undefined
+}
+[2022-08-25T17:18:39.728] [TRACE] keyword - {
+  time: 2022-08-25T09:18:39.728Z,
+  touser: 'oHQaO5xNbT7xDIaytwv-9Cd7Cv_I',
+  keyword: '济南天气'
+}
+[2022-08-25T22:03:46.036] [ERROR] keyword - {
+  time: 2022-08-25T14:03:46.036Z,
+  touser: 'oHQaO5xNbT7xDIaytwv-9Cd7Cv_I',
+  msg: '关键词不正确',
+  keyword: ''
+}
+[2022-08-25T22:04:12.396] [TRACE] keyword - {
+  time: 2022-08-25T14:04:12.396Z,
+  touser: 'oHQaO5xNbT7xDIaytwv-9Cd7Cv_I',
+  keyword: '莱芜天气'
+}
+[2022-08-25T22:04:32.181] [TRACE] keyword - {
+  time: 2022-08-25T14:04:32.181Z,
+  touser: 'oHQaO5xNbT7xDIaytwv-9Cd7Cv_I',
+  keyword: '济南天气'
+}
+[2022-08-25T22:04:37.296] [TRACE] keyword - {
+  time: 2022-08-25T14:04:37.296Z,
+  touser: 'oHQaO5xNbT7xDIaytwv-9Cd7Cv_I',
+  keyword: '莱芜天气'
+}
+[2022-08-25T22:05:28.998] [TRACE] keyword - {
+  time: 2022-08-25T14:05:28.998Z,
+  touser: 'oHQaO5xNbT7xDIaytwv-9Cd7Cv_I',
+  keyword: '莱芜天气'
+}
+[2022-08-25T22:05:44.970] [TRACE] keyword - {
+  time: 2022-08-25T14:05:44.970Z,
+  touser: 'oHQaO5xNbT7xDIaytwv-9Cd7Cv_I',
+  keyword: '莱芜天气'
+}
+[2022-08-25T22:05:54.425] [TRACE] keyword - {
+  time: 2022-08-25T14:05:54.425Z,
+  touser: 'oHQaO5xNbT7xDIaytwv-9Cd7Cv_I',
+  keyword: '上海天气'
+}
+[2022-08-25T22:06:21.476] [TRACE] keyword - {
+  time: 2022-08-25T14:06:21.476Z,
+  touser: 'oHQaO5xNbT7xDIaytwv-9Cd7Cv_I',
+  keyword: '莱芜天气'
+}
+[2022-08-25T22:07:07.114] [TRACE] keyword - {
+  time: 2022-08-25T14:07:07.114Z,
+  touser: 'oHQaO5xNbT7xDIaytwv-9Cd7Cv_I',
+  keyword: '莱芜天气'
+}
+[2022-08-25T22:10:32.740] [TRACE] keyword - {
+  time: 2022-08-25T14:10:32.740Z,
+  touser: 'oHQaO5xNbT7xDIaytwv-9Cd7Cv_I',
+  keyword: '济南天气'
+}
+[2022-08-25T22:11:47.348] [TRACE] keyword - {
+  time: 2022-08-25T14:11:47.348Z,
+  touser: 'oHQaO5xNbT7xDIaytwv-9Cd7Cv_I',
+  keyword: '济南天气'
+}
+[2022-08-25T22:12:24.007] [TRACE] keyword - {
+  time: 2022-08-25T14:12:24.007Z,
+  touser: 'oHQaO5xNbT7xDIaytwv-9Cd7Cv_I',
+  keyword: '北京天气'
+}
+[2022-08-25T22:13:49.823] [TRACE] keyword - {
+  time: 2022-08-25T14:13:49.823Z,
+  touser: 'oHQaO5xNbT7xDIaytwv-9Cd7Cv_I',
+  keyword: '北京天气'
+}
+[2022-08-25T22:14:44.398] [TRACE] keyword - {
+  time: 2022-08-25T14:14:44.398Z,
+  touser: 'oHQaO5xNbT7xDIaytwv-9Cd7Cv_I',
+  keyword: '北京天气'
+}
+[2022-08-25T22:15:06.432] [TRACE] keyword - {
+  time: 2022-08-25T14:15:06.432Z,
+  touser: 'oHQaO5xNbT7xDIaytwv-9Cd7Cv_I',
+  keyword: '北京天气'
+}
+[2022-08-25T22:16:23.709] [TRACE] keyword - {
+  time: 2022-08-25T14:16:23.709Z,
+  touser: 'oHQaO5xNbT7xDIaytwv-9Cd7Cv_I',
+  keyword: '北京天气'
+}
+[2022-08-25T22:18:16.154] [TRACE] keyword - {
+  time: 2022-08-25T14:18:16.154Z,
+  touser: 'oHQaO5xNbT7xDIaytwv-9Cd7Cv_I',
+  keyword: '北京天气'
+}
+[2022-08-25T22:19:05.285] [TRACE] keyword - {
+  time: 2022-08-25T14:19:05.285Z,
+  touser: 'oHQaO5xNbT7xDIaytwv-9Cd7Cv_I',
+  keyword: '北京天气'
+}
+[2022-08-25T22:19:26.672] [TRACE] keyword - {
+  time: 2022-08-25T14:19:26.672Z,
+  touser: 'oHQaO5xNbT7xDIaytwv-9Cd7Cv_I',
+  keyword: '北京天气'
+}
+[2022-08-25T22:20:04.516] [TRACE] keyword - {
+  time: 2022-08-25T14:20:04.516Z,
+  touser: 'oHQaO5xNbT7xDIaytwv-9Cd7Cv_I',
+  keyword: '北京天气'
+}
+[2022-08-25T22:20:15.096] [TRACE] keyword - {
+  time: 2022-08-25T14:20:15.096Z,
+  touser: 'oHQaO5xNbT7xDIaytwv-9Cd7Cv_I',
+  keyword: '济南天气'
+}
+[2022-08-25T22:21:56.804] [TRACE] keyword - {
+  time: 2022-08-25T14:21:56.804Z,
+  touser: 'oHQaO5xNbT7xDIaytwv-9Cd7Cv_I',
+  keyword: '我爱你'
+}
+[2022-08-25T22:22:19.872] [TRACE] keyword - {
+  time: 2022-08-25T14:22:19.872Z,
+  touser: 'oHQaO5xNbT7xDIaytwv-9Cd7Cv_I',
+  keyword: '我爱你'
+}
+[2022-08-25T22:22:59.479] [TRACE] keyword - {
+  time: 2022-08-25T14:22:59.479Z,
+  touser: 'oHQaO5xNbT7xDIaytwv-9Cd7Cv_I',
+  keyword: '我爱你'
+}
+[2022-08-25T22:24:10.641] [TRACE] keyword - {
+  time: 2022-08-25T14:24:10.641Z,
+  touser: 'oHQaO5xNbT7xDIaytwv-9Cd7Cv_I',
+  keyword: '济南天气'
+}
+[2022-08-25T22:24:59.936] [TRACE] keyword - {
+  time: 2022-08-25T14:24:59.936Z,
+  touser: 'oHQaO5xNbT7xDIaytwv-9Cd7Cv_I',
+  keyword: '济南天气'
+}
+[2022-08-25T22:25:21.812] [TRACE] keyword - {
+  time: 2022-08-25T14:25:21.812Z,
+  touser: 'oHQaO5xNbT7xDIaytwv-9Cd7Cv_I',
+  keyword: '济南天气'
+}
+[2022-08-25T22:25:29.681] [TRACE] keyword - {
+  time: 2022-08-25T14:25:29.681Z,
+  touser: 'oHQaO5xNbT7xDIaytwv-9Cd7Cv_I',
+  keyword: '我爱你'
+}

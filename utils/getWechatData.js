@@ -1,15 +1,15 @@
 /*
  * @Descripttion: 
  * @version: 
- * @Author: 王家豪
+ * @Author: 937bb
  * @Date: 2022-08-22 17:34:23
- * @LastEditors: 王家豪
- * @LastEditTime: 2022-08-22 20:54:30
+ * @LastEditors: 937bb
+ * @LastEditTime: 2022-08-26 09:11:58
  */
 const {
   parseString
 } = require('xml2js')
-
+const request = require('request');
 
 let getUserDataAsync = (req) => {
   return new Promise((resolve, reject) => {
@@ -54,6 +54,7 @@ let formatMessage = (jsData) => {
   }
   return message
 }
+
 
 module.exports = {
   getUserDataAsync,
